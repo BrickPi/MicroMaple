@@ -37,8 +37,9 @@ CAN is optional, and the specification makes no regard as to if it is or isn't i
 1.3 Kernel Messages*
 
 1.3.1 The kernel MUST implement MSG ID 17 as MSG_ALLOC which when received by the kernel allocates physical memory based on a number of flags. This message is 8 bytes in length, with the second dword containing a 24-bit number containing the number of pages requested, and an 8-bit number containing the flags, (ISADMA, LOWMEM, etc.)
-1.3.2.1 The kernel MUST implement MSG ID 18 as MSG_ALLOC_DONE.
+1.3.2.1 The kernel MUST implement MSG ID 18 as MSG_ALLOCD.
 1.3.2.2 When MSG_ALLOC_DONE is received by a program, it MUST be 8 or 12 bytes in length, which if successful, are 12 bytes containing an 64-bit memory address of the allocated memory, a 24-bit number containing the number of pages in this allocation, and 8 bits set to either 0x00 if there is no more chunks, or the number of further chunks coming as MSG_ALLOC_DONE messages.
 1.3.2.3 If memory allocation is unsuccessful, it MUST be an 8 byte message with an error code in the lower dword of the message.
+1.3.3 The kernel MUST implement MSG ID 19 as MSG_FREE which when received by the kernel deallocates physical memory at a provided address. This message is 12 bytes long, with the data being only the address. MSG_FREE MUST guarantee that the memory is freed.
 
 * See Section 2 Kernel Routines and Function for more guidance on the function of these messages.
