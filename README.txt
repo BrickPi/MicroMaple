@@ -42,6 +42,4 @@ CAN is optional, and the specification makes no regard as to if it is or isn't i
 1.3.2.3 If memory allocation is unsuccessful, it MUST be an 8 byte message with an error code in the lower dword of the message.
 1.3.3 The kernel MUST implement MSG ID 19 as MSG_FREE which when received by the kernel deallocates physical memory at a provided address. This message is 12 bytes long, with the data being only the address. MSG_FREE MUST guarantee that the memory is freed.
 
-1.3.4
-
 * See Section 2 Kernel Routines and Function for more guidance on the function of these messages.
