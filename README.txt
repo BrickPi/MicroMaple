@@ -2,7 +2,7 @@ The µMaple Kernel and System Architecture
 Joel Machens - 2022
 
 Using µMaple
-µMaple is nothing but a memory manager and scheduler, by no means a complete system and by even less a way of booting or operating a computer. µMaple is compliant with Multiboot (GRUB), Limine, and MLOAD, a tiny Maple-developed loader for UEFI-based systems.
+µMaple is nothing but a memory manager and scheduler, by no means a complete system and by even less a way of booting or operating a computer. µMaple is compliant with Multiboot (GRUB, Limine etc) and MLOAD, a tiny Maple-developed loader for UEFI-based systems.
 
 Specification
 
