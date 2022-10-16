@@ -1,4 +1,4 @@
-ENTRY(grubstrap)
+ENTRY(kmain)
 OUTPUT_FORMAT(binary)
 SECTIONS
 {
