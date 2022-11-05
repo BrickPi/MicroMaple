@@ -15,6 +15,19 @@ kernel: ${OBJS}
 %.o: %.S
 	nasm -felf64 $< -o $@
 
+.PHONY: run
+run: kernel mload
+	touch test.img
+	dd if=/dev/zero of=./test.img bs=33554432 count=1
+	mkfs.fat ./test.img
+	sudo mount test.img test
+	sudo mkdir test/EFI
+	sudo mkdir test/EFI/boot
+	sudo cp mload.efi test/EFI/boot/bootx64.efi
+	sudo cp kernel test/kernel
+	sudo umount test
+	qemu-system-x86_64 -monitor stdio -hda ./test.img -bios /usr/share/edk2/ovmf/OVMF_CODE.fd
+
 .PHONY: clean
 clean:
-	rm -rf ${OBJS} kernel src/load/mload.c mload.efi
+	rm -rf ${OBJS} kernel mload.efi test.img
