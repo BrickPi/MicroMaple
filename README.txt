@@ -1,8 +1,8 @@
 The µMaple Kernel and System Architecture
-Joel Machens - 2022
+Joel Machens - 2022, 2023
 
 Using µMaple
-µMaple is nothing but a memory manager and scheduler, by no means a complete system and by even less a way of booting or operating a computer. If you wish to use it, you'll have to find a way to load it, although it is planned to write a simple UEFI loader for it, called MLOAD.
+µMaple is a self-booting memory manager, scheduler, resource allocator, and module loader for use as part of a modular operating system.
 
 Specification
 
@@ -25,14 +25,14 @@ CAN is optional, and the specification makes no regard as to if it is or isn't i
 
 1.2 Message Delivery
 
-1.2.1 A Kernel MUST implement SYSCALL where RAX = 0 to send messages, known henceforth as the POSTMSG system call.
-1.2.2 Upon POSTMSG system call, the kernel MUST read RDI to find destination process ID.
+1.2.1 A Kernel MUST implement SYSCALL where AX = 0 to send messages, known henceforth as the POSTMSG system call.
+1.2.2 Upon POSTMSG system call, the kernel MUST read DI to find destination process ID.
 1.2.3 The kernel MUST verify that the destination process exists.
 1.2.4 The kernel SHOULD inform the caller (with a message) if the destination process does not exist and cannot be started.
 1.2.5 The kernel MUST verify that the caller has the authority to send the message.
 1.2.6 The kernel MUST verify that the destination process supports and can receive the message.
-1.2.7 The kernel MUST verify the message structure at memory location RSI.
-1.2.8 The kernel MUST copy the message structure at RSI to the message queue of the destination process.
+1.2.7 The kernel MUST verify the message structure at memory location (address in SI).
+1.2.8 The kernel MUST copy the message structure at SI to the message queue of the destination process.
 1.2.9 The kernel MUST add to the execution queue the "RECVMSG" function of the destination process.
 
 1.3 Kernel Messages*
@@ -61,7 +61,7 @@ CAN is optional, and the specification makes no regard as to if it is or isn't i
 
 1.3.5.1 The kernel MUST implement MSG ID 21 as MSG_PROC which when received by the kernel creates a new process and adds its MSG_START to the execution queue. This message is 14 bytes long, with the first dword in the data being the flags with which to create the new process, and the last 8 bytes being the address of the executable header in memory, or the address of the RECVMSG header should it be a not MX binary**. This command will take the address space defined in the executable header away from the calling process, unless it is a flat binary.
 1.3.5.2 Flags for MSG_PROC
-	[----------------] 2 Byte 
+	[----------------] 2 Byte Word
 	[xxxxxxxxxxxxxxxx] Reserved - CAN be used for anything, but may be standardised in later versions of the specification. 
 
 * See Section 2 Kernel Routines and Function for more guidance on the function of these messages.

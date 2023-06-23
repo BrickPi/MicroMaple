@@ -1,7 +1,4 @@
 .DS_Store
 *.o
-kernel
-mload.efi
 .vscode
-test.img
-test
+boot.bin
