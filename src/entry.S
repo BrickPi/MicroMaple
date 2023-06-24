@@ -18,20 +18,26 @@ INT 0x10 ; startup display
 %include "src/util/A20.S"
 after_A20:
 
-; load rest of kernel
+; load rest of the bootloader (TODO: load kernel and relocate to 0xA000, then handoff)
 MOV AH, 0
 INT 0x13
 MOV AH, 0x2
-MOV AL, 0xF ; SECTORS TO READ
+MOV AL, 0x1 ; SECTORS TO READ
 MOV CX, 0x2
 MOV DH, 0x0
 XOR BX, BX
 MOV ES, BX
 MOV BX, 0x7E00
 INT 0x13
+
+; detect memory
+CALL do_e820
+JC halt
+
+; jump to second stage
 JMP 0x7E00
-CLI
-HLT
+
+%include "src/util/MMAP.S"
 
 TIMES 510-($-$$) DB 0
 DW 0xAA55
@@ -49,7 +55,7 @@ OR AL, 1 ; SET PE BIT
 MOV CR0, EAX
 JMP 8:pm_init ; far jump to PM
 pm_init: ; init all of our segment registers
-BITS 32
+BITS 32 ; ALL CODE AFTER THIS IS 32 BIT
 MOV EAX, 16d
 MOV DS, EAX
 MOV SS, EAX
