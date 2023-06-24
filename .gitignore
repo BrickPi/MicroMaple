@@ -1,4 +1,4 @@
 .DS_Store
 *.o
 .vscode
-boot.bin
+mdos.sys
