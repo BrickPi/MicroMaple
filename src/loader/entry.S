@@ -49,7 +49,7 @@ JMP 0x7E00
 TIMES 510-($-$$) DB 0
 DW 0xAA55
 
-; disable NMI
+; disable interrupts
 CLI
 IN AL, 0x70
 OR AL, 0x80
@@ -69,24 +69,21 @@ MOV SS, EAX
 MOV ES, EAX
 MOV ESP, 0x7C00
 
-; enable NMI
+; re-enable NMI, now that we're working with 32 bit code, we can't enable interrupts again until IDT is setup.
 IN AL, 0x70
 AND AL, 0x7F
 OUT 0x70, AL
 IN AL, 0x71
-STI
 
 ; jump to the kernel
 PUSH 0x8004
 PUSH 0x8000
 ; TODO: verify MX header and CALL start of code segment
 CALL 0x10000
-JMP halt
-
-%include "loader/util/GDT.S"
-
 halt:
 CLI
 HLT
+
+%include "loader/util/GDT.S"
 
 TIMES 1024-($-$$) DB 0

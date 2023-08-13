@@ -2,7 +2,7 @@
 #define _H_SUPERVISOR
 #include "defs.h"
 
-struct __attribute__(packed) MMAP_ENT
+struct MMAP_ENT
 {
     UINT64 base_addr;
     UINT64 region_len;
