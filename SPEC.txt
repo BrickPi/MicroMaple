@@ -56,15 +56,15 @@ The word MAY denotes a requirement that is recommended, but is discretional for 
 
 2.1 - MX Header
 2.1.1 The MX header shall contain the following values, in sequential order 
-    1 The hex code '4D58' (MX)
-    2 The length of the header in bytes
-    3 The length of the code segment in bytes
-    4 The length of the data segment in bytes
-    5 The optional module name, for system modules
+    1 The hex code '4A4D'
+    2 The length of the header in bytes (UINT16)
+    3 The length of the code segment in bytes (UINT32)
+    4 The length of the data segment in bytes (UINT32)
+    5 An optional pointer to the optional module name, for system modules
     6 The optional module version, for system modules
     7 Any number of addresses of public interface functions for modules.
         The module is expected to have a public API specified for developers to be able to understand parameters and the header index of each API function.
-    8 The sum-complement checksum of the MX Header
+    8 The sum-complement checksum of the MX Header (UINT32)
 2.2 The MX code segment shall come directly after the header
 2.3 The MX data segment shall come directly after the code segment
 2.4 - Loading an MX
